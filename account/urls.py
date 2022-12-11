@@ -19,5 +19,7 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     # Define user dashboard url
     path('', views.dashboard, name='dashboard'),
+    # Define user registration url
+    path('register/', views.register, name='register'),
 
 ]
