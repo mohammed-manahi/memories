@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
-
-from django.conf.global_settings import LOGOUT_REDIRECT_URL
 from dotenv import load_dotenv
 
 # Use dotenv to secure secret keys in the project
@@ -130,8 +128,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Set default authentication urls
+# Override default authentication urls for login and logout
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
-# LOGOUT_REDIRECT_URL = 'logout'
 LOGOUT_URL = 'logout'
+
+# Set mailing smtp server for development
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
