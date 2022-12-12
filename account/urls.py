@@ -21,5 +21,6 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     # Define user registration url
     path('register/', views.register, name='register'),
+    path('edit/', views.edit, name='edit')
 
 ]

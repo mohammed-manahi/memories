@@ -4,5 +4,7 @@
 {% endblock %}
 {% block content %}
     <h2>Dashboard</h2>
-    <p> {{ request.user.username |capfirst }}, welcome the dashboard</p>
+    <p> {{ request.user.username |capfirst }}, welcome the dashboard,
+        You can <a href="{% url 'edit' %}">edit your profile</a> or
+        <a href="{% url 'password_change' %}">change your password</a>.</p>
 {% endblock %}
