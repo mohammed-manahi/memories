@@ -140,3 +140,11 @@ LOGOUT_URL = 'logout'
 # Set mailing smtp server for development
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Define authentication backends
+AUTHENTICATION_BACKENDS = [
+    # Default authentication backend
+    'django.contrib.auth.backends.ModelBackend',
+    # Custom authentication backend to allow logging in using email
+    'account.authentication.EmailAuthBackend',
+]
