@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -49,6 +49,7 @@ def register(request):
             new_user.save()
             # Create user profile when a new user is created
             Profile.objects.create(user=new_user)
+            messages.success(request, "You have been registered successfully")
             template = "account/register_done.html"
             context = {"new_user": new_user}
             return render(request, template, context)
