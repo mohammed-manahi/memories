@@ -29,7 +29,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'dev.fedora.me']
 
 # Application definition
 
@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Add social django third-party app to enable oauth with social media apps
+    # Note: social media apps prevent redirecting to localhost, therefore /etc/hosts must be modified by adding a host
+    'social_django',
+    # Add django extension to enable run server plus which enables lts http for social media apps
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Include account urls
     path('account/', include('account.urls')),
+    # Include social django urls
+    path('social-auth/', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

@@ -9,6 +9,10 @@ psycopg2-binary = "*"
 python-dotenv = "*"
 pep8 = "*"
 pillow = "*"
+social-auth-app-django = "*"
+django-extensions = "*"
+werkzeug = "*"
+pyopenssl = "*"
 
 [dev-packages]
 
