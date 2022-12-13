@@ -8,4 +8,13 @@
         {% csrf_token %}
         <p><input type="submit" value="Create my account"></p>
     </form>
+    <div class="social">
+        <ul>
+            <li class="facebook">
+                <a href="{% url "social:begin" "facebook" %}">
+                    Sign in with Facebook
+                </a>
+            </li>
+        </ul>
+    </div>
 {% endblock %}
