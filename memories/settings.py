@@ -152,4 +152,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     # Custom authentication backend to allow logging in using email
     'account.authentication.EmailAuthBackend',
+    # Facebook oauth backend
+    'social_core.backends.facebook.FacebookOAuth2',
 ]
+
+# Define facebook authentication credentials
+SOCIAL_AUTH_FACEBOOK_KEY = str(os.getenv('SOCIAL_AUTH_FACEBOOK_KEY'))
+SOCIAL_AUTH_FACEBOOK_SECRET = str(os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET'))
