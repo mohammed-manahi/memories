@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'social_django',
     # Add django extension to enable run server plus which enables lts http for social media apps
     'django_extensions',
+    # Add core app to installed apps
+    'core',
 ]
 
 MIDDLEWARE = [
