@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
-
+from django.urls import reverse
 
 class Image(models.Model):
     # Create image model and associate many-to-one relation with user model for user creates images
@@ -27,3 +27,7 @@ class Image(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        # Create canonical url for detail view
+        return reverse("core:detail", args=[self.pk, self.slug])
