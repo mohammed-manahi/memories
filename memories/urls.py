@@ -24,6 +24,8 @@ urlpatterns = [
     path('account/', include('account.urls')),
     # Include social django urls
     path('social-auth/', include('social_django.urls', namespace='social')),
+    # Include core urls
+    path('core/', include('core.urls', namespace='core')),
 ]
 
 if settings.DEBUG:
