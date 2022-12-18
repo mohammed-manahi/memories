@@ -48,5 +48,15 @@
     {% block content %}
     {% endblock %}
 </div>
+<script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+<script>
+    // JS CSRF token using cookies
+    const csrftoken = Cookies.get('csrftoken');
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Load js DOM
+        {% block domready %}
+        {% endblock %}
+    })
+</script>
 </body>
 </html>

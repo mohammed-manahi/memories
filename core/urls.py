@@ -6,5 +6,8 @@ app_name = "core"
 urlpatterns = [
     # Define image create url
     path('create/', views.image_create, name="create"),
+    # Define image detail url
     path('detail/<int:pk>/<slug:slug>/', views.image_detail, name="detail"),
+    # Define image like/dislike url
+    path('like/', views.image_like, name="like"),
 ]
