@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django_extensions',
     # Add core app to installed apps
     'core',
+    # Add easy thumbnails third-party app to enable generating image thumbnails
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -180,5 +182,6 @@ SOCIAL_AUTH_PIPELINE = [
 # Allow mime type for bookmarklet to fetch images from external resources
 if DEBUG:
     import mimetypes
+
     mimetypes.add_type('application/javascript', '.js', True)
     mimetypes.add_type('text/css', '.css', True)
