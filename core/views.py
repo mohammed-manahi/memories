@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.decorators.http import require_POST
 from core.forms import ImageCreateForm
 from core.models import Image
@@ -27,6 +28,7 @@ def image_create(request):
         return render(request, template, context)
 
 
+@login_required
 def image_detail(request, slug, pk):
     # Create image detail view
     image = get_object_or_404(Image, slug=slug, pk=pk)
@@ -52,3 +54,28 @@ def image_like(request):
         except Image.DoesNotExist:
             pass
     return JsonResponse({"status": "error"})
+
+
+@login_required
+def image_list(request):
+    # Create image list and paginate results
+    images = Image.objects.all()
+    paginator = Paginator(images, 8)
+    page = request.GET.get("page")
+    images_only = request.GET.get("images_only")
+    try:
+        images = paginator.page(page)
+    except PageNotAnInteger:
+        images = paginator.page(1)
+    except EmptyPage:
+        if images_only:
+            # Stop ajax fetch api when list reaches the end
+            return HttpResponse("")
+        images = paginator.page(page.num_pages)
+    if images_only:
+        template = "core/list_images.html"
+        context = {"section": "images", "images": images}
+        return render(request, template, context)
+    template = "core/list.html"
+    context = {"section": "images", "images": images}
+    return render(request, template, context)

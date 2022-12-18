@@ -10,4 +10,6 @@ urlpatterns = [
     path('detail/<int:pk>/<slug:slug>/', views.image_detail, name="detail"),
     # Define image like/dislike url
     path('like/', views.image_like, name="like"),
+    # Define image list url
+    path('', views.image_list, name='list'),
 ]
