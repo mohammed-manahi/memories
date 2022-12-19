@@ -21,6 +21,12 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     # Define user registration url
     path('register/', views.register, name='register'),
-    path('edit/', views.edit, name='edit')
-
+    # Define user edit url
+    path('edit/', views.edit, name='edit'),
+    # Define user list url
+    path('users/', views.user_list, name="user_list"),
+    # Define user follow url
+    path('users/follow/', views.user_follow, name='user_follow'),
+    # Define user detail url
+    path('users/<username>/', views.user_detail, name="user_detail"),
 ]

@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.contrib.auth.models import User
 from account.forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from account.models import Profile
+from account.models import Profile, Contact
 
 
 # def user_login(request):
@@ -80,3 +83,41 @@ def edit(request):
     template = "account/edit.html"
     context = {"user_form": user_form, "profile_form": profile_form}
     return render(request, template, context)
+
+
+@login_required
+def user_list(request):
+    # Create user list view
+    users = User.objects.filter(is_active=True, is_staff=False)
+    template = "account/list.html"
+    context = {"users": users}
+    return render(request, template, context)
+
+
+@login_required
+def user_detail(request, username):
+    # Create user detail view
+    user = get_object_or_404(User, is_active=True, is_staff=False, username=username)
+    template = "account/detail.html"
+    context = {"section": "people", "user": user}
+    return render(request, template, context)
+
+
+@login_required
+@require_POST
+def user_follow(request):
+    # Create user follow view
+    user_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if user_id and action:
+        try:
+            user = User.objects.get(id=user_id)
+            if action == "follow":
+                Contact.objects.get_or_create(user_from=request.user, user_to=user)
+            else:
+                Contact.objects.filter(user_from=request.user, user_to=user).delete()
+            return JsonResponse({'status': 'ok'})
+        except User.DoesNotExist:
+            return JsonResponse({'status': 'error'})
+    return JsonResponse({'status': 'error'})
+

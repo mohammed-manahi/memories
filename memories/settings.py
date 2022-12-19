@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from django.urls import reverse_lazy
 
 # Use dotenv to secure secret keys in the project
 load_dotenv()
@@ -185,3 +186,9 @@ if DEBUG:
 
     mimetypes.add_type('application/javascript', '.js', True)
     mimetypes.add_type('text/css', '.css', True)
+
+# This setting builds canonical url automatically for and model defined in the dictionary
+ABSOLUTE_URL_OVERRIDES = {
+    # Set canonical url for user model to add get_absolute_url dynamically
+    'auth.user': lambda user: reverse_lazy('user_detail', args=[user.username])
+}
