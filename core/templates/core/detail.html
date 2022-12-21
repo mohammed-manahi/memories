@@ -13,7 +13,11 @@
                     <span class="total">{{ total_likes }}</span>
                     {{ total_likes }} like{{ total_likes|pluralize }}
                 </span>
-                <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
+                <span class="count">
+                    {{ total_views }} view{{ total_views|pluralize }}
+                </span>
+                <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like"
+                   class="like button">
                     {% if request.user not in users_like %}
                         Like
                     {% else %}
@@ -38,15 +42,15 @@
     {% endwith %}
 {% endblock %}
 {% block domready %}
-  const url = '{% url "core:like" %}';
-  var options = {
+    const url = '{% url "core:like" %}';
+    var options = {
     method: 'POST',
     headers: {'X-CSRFToken': csrftoken},
     mode: 'same-origin'
-  }
+    }
 
-  document.querySelector('a.like')
-          .addEventListener('click', function(e){
+    document.querySelector('a.like')
+    .addEventListener('click', function(e){
     e.preventDefault();
     var likeButton = this;
 
@@ -60,20 +64,20 @@
     fetch(url, options)
     .then(response => response.json())
     .then(data => {
-      if (data['status'] === 'ok')
-      {
-        var previousAction = likeButton.dataset.action;
+    if (data['status'] === 'ok')
+    {
+    var previousAction = likeButton.dataset.action;
 
 
-        var action = previousAction === 'like' ? 'unlike' : 'like';
-        likeButton.dataset.action = action;
-        likeButton.innerHTML = action;
+    var action = previousAction === 'like' ? 'unlike' : 'like';
+    likeButton.dataset.action = action;
+    likeButton.innerHTML = action;
 
 
-        var likeCount = document.querySelector('span.count .total');
-        var totalLikes = parseInt(likeCount.innerHTML);
-        likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
-      }
+    var likeCount = document.querySelector('span.count .total');
+    var totalLikes = parseInt(likeCount.innerHTML);
+    likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
+    }
     })
-  });
+    });
 {% endblock %}

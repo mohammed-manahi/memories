@@ -194,3 +194,8 @@ ABSOLUTE_URL_OVERRIDES = {
     # Set canonical url for user model to add get_absolute_url dynamically
     'auth.user': lambda user: reverse_lazy('user_detail', args=[user.username])
 }
+
+# Set redis configuration
+REDIS_HOST = str(os.getenv("REDIS_HOST"))
+REDIS_PORT = int(os.getenv("REDIS_PORT"))
+REDIS_DB = int(os.getenv("REDIS_DB"))

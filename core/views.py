@@ -7,6 +7,12 @@ from django.views.decorators.http import require_POST
 from core.forms import ImageCreateForm
 from core.models import Image
 from activity.utils import create_action
+import redis
+from django.conf import settings
+
+# Setup redis connection to get images view count using redis
+r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
 
 @login_required
 def image_create(request):
@@ -34,8 +40,10 @@ def image_create(request):
 def image_detail(request, slug, pk):
     # Create image detail view
     image = get_object_or_404(Image, slug=slug, pk=pk)
+    # Increment the count of image detail view for each view
+    total_views = r.incr(f'image:{image.id}:views')
     template = "core/detail.html"
-    context = {"section": "images", "image": image}
+    context = {"section": "images", "image": image, "total_views": total_views}
     return render(request, template, context)
 
 
