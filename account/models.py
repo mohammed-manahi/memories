@@ -33,5 +33,5 @@ class Contact(models.Model):
 user_model = get_user_model()
 # Set symmetrical to false which sets the follow from one side and doesn't enforce mutual following by default
 # If user 1 followed user 2 the relationship doesn't enforce user 2 to follow user 1 automatically
-user_model.add_to_class = (
-    "following", models.ManyToManyField("self", through=Contact, related_name="followers", symmetrical=False))
+user_model.add_to_class = ("following", models.ManyToManyField("self", through=Contact, related_name="followers",
+                                                               symmetrical=False))

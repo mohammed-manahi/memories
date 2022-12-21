@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from account.forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from account.models import Profile, Contact
+from activity.utils import create_action
+from activity.models import Action
 
 
 # def user_login(request):
@@ -35,9 +37,18 @@ from account.models import Profile, Contact
 
 @login_required
 def dashboard(request):
+    # Display activity stream and exclude current user activities
+    actions = Action.objects.exclude(user=request.user)
+    # Get the user's following list
+    following_users_ids = request.user.following.values_list("id", flat=True)
+    if following_users_ids:
+        # filter the activity stream actions for the following list
+        actions = actions.filter(user_id__in=following_users_ids)
+    # Optimize the query set by selecting and prefetching the related models
+    actions = actions.select_related("user", "user__profile").prefetch_related("target")[:10]
     # Create a dashboard for redirecting authenticated users after login
     template = "account/dashboard.html"
-    context = {}
+    context = {"actions": actions, "section": "dashboard"}
     return render(request, template, context)
 
 
@@ -52,6 +63,8 @@ def register(request):
             new_user.save()
             # Create user profile when a new user is created
             Profile.objects.create(user=new_user)
+            # Record this activity stream using generic relationship of content type
+            create_action(new_user, "registered a new account")
             messages.success(request, "You have been registered successfully")
             template = "account/register_done.html"
             context = {"new_user": new_user}
@@ -114,10 +127,11 @@ def user_follow(request):
             user = User.objects.get(id=user_id)
             if action == "follow":
                 Contact.objects.get_or_create(user_from=request.user, user_to=user)
+                # Record this activity stream using generic relationship of content type
+                create_action(request.user, "followed", user)
             else:
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
             return JsonResponse({'status': 'ok'})
         except User.DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error'})
-
