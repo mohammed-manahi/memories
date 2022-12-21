@@ -7,7 +7,7 @@ from activity.models import Action
 def create_action(user, verb, target=None):
     # Define a shortcut method to create new action and set target to none by default since it is needed in only generic
     now = timezone.now()
-    last_minute = now = datetime.timedelta(seconds=60)
+    last_minute = now - datetime.timedelta(seconds=60)
     # Prevent repetitive actions within short period of time
     similar_actions = Action.objects.filter(user_id=user.id, verb=verb, created_at__gte=last_minute)
     if target:
