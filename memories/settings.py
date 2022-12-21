@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'core',
     # Add easy thumbnails third-party app to enable generating image thumbnails
     'easy_thumbnails',
+    # Add activity app to installed apps
+    'activity',
 ]
 
 MIDDLEWARE = [
