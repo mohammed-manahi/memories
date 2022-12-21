@@ -15,9 +15,10 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # Associate many-to-many relation with user model for users like the images
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="images_liked", blank=True)
-
+    # Add total likes field to denormalizing counts for image likes
+    total_likes = models.PositiveIntegerField(default=0)
     class Meta:
-        indexes = [models.Index(fields=["created_at"])]
+        indexes = [models.Index(fields=["-created_at"]), models.Index(fields=["-total_likes"])]
         ordering = ["-created_at"]
 
     def __str__(self):
