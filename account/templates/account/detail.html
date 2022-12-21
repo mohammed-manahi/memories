@@ -13,22 +13,22 @@
             <img src="{% static 'default.jpg' %}" style="height: 180px; width: 180px;">
         {% endif %}
     </div>
-    {#    {% with total_followers=user.followers.count %}#}
-    <span class="count">
+    {% with total_followers=user.followers.count %}
+        <span class="count">
             <span class="total">{{ user_count }}</span>follower{{ user_count|pluralize }}
         </span>
-    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
-       class="follow button">
-        {% if request.user not in user.followers.all %}
-            Follow
-        {% else %}
-            unfollow
-        {% endif %}
-    </a>
-    <div id="image-list" class="image-container">
-        {% include "core/list_images.html" with images=user.images_created.all %}
-    </div>
-    {#    {% endwith %}#}
+        <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+           class="follow button">
+            {% if request.user not in user.followers.all %}
+                Follow
+            {% else %}
+                unfollow
+            {% endif %}
+        </a>
+        <div id="image-list" class="image-container">
+            {% include "core/list_images.html" with images=user.images_created.all %}
+        </div>
+    {% endwith %}
 {% endblock %}
 
 {% block domready %}
